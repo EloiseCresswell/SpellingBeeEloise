@@ -1,9 +1,26 @@
 console.log("hello there!");
 let score = 0;
-let answerSubmit = document.getElementById("submitButton");
-answerSubmit.addEventListener("click", getAnswer);
+
 //finding the answer when you submit the button
 
+//function to give 7 random letters...
+const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+
+function generateString(length) {
+  let result = " ";
+  const charactersLength = characters.length;
+  for (let i = 0; i < length; i++) {
+    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+  }
+
+  return result;
+}
+
+document.getElementById("letters").innerHTML = generateString(7);
+
+//function to check if the answer is correct / in the dictionary and run it if clicked
+let answerSubmit = document.getElementById("submitButton");
+answerSubmit.addEventListener("click", getAnswer);
 function getAnswer() {
   answer = document.getElementById("answer").value;
   const url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + answer;
