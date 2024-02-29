@@ -4,19 +4,45 @@ let score = 0;
 //finding the answer when you submit the button
 
 //function to give 7 random letters...
-const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ";
+let characters = "BCDFGHJKLMNPQRSTVWXYZ";
 
-function generateString(length) {
-  let result = " ";
-  const charactersLength = characters.length;
-  for (let i = 0; i < length; i++) {
-    result += characters.charAt(Math.floor(Math.random() * charactersLength));
+function fiveRandomConsts() {
+  let randomLetters = "";
+  for (let i = 0; i < 5; i++) {
+    let randomLet = characters.charAt(
+      Math.floor(Math.random() * characters.length)
+    );
+    characters = characters.replace(randomLet, "");
+    randomLetters += randomLet;
   }
-
-  return result;
+  return randomLetters;
 }
 
-document.getElementById("letters").innerHTML = generateString(7);
+//Vowel function
+let vowels = "AEIOU";
+
+function twoRandomVowels() {
+  let randomLettersVowels = "";
+  for (let i = 0; i < 2; i++) {
+    let randomLet = vowels.charAt(Math.floor(Math.random() * vowels.length));
+    //console.log(randomLet);
+    vowels = vowels.replace(randomLet, "");
+    randomLettersVowels += randomLet;
+    //console.log(randomLetters);
+  }
+  return randomLettersVowels;
+}
+
+//combining the two functions together to produce the string for the letters
+function comboLetters() {
+  const constnants = fiveRandomConsts();
+  const vowels = twoRandomVowels();
+  document.getElementById("letters").innerHTML = constnants + vowels;
+}
+
+comboLetters();
+
+//check if combo letters are in the answer provided...
 
 //function to check if the answer is correct / in the dictionary and run it if clicked
 let answerSubmit = document.getElementById("submitButton");
