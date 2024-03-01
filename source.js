@@ -2,6 +2,7 @@ console.log("hello there!");
 let score = 0;
 let answerArray = [];
 let answer = "";
+
 //finding the answer when you submit the button
 //function to give 7 random letters...
 let characters = "BCDFGHJKLMNPQRSTVWXYZ";
@@ -114,19 +115,25 @@ function getAnswer() {
   async function checkDictionary() {
     const response = await fetch(url);
     if (response.status === 404) {
-      console.log("not a word");
+      document.getElementById(
+        "alreadyAnswered"
+      ).textContent = `${answer} is not a word, try again!`;
     } else if (answerArray.includes(answer)) {
       console.log("answer already in the answer array");
       document.getElementById("alreadyAnswered").textContent =
         "Answer already submitted!";
     } else {
-      console.log("nice word");
-      score = score + additionToScore;
-      document.getElementById("score").textContent = score;
-      document.getElementById("answer").value = "";
+      const buttonfour = document.getElementById("forthLet").innerHTML;
+      if (answer.includes(buttonfour)) {
+        console.log("nice word");
+        score = score + additionToScore;
+        document.getElementById("score").textContent = score;
+        document.getElementById("answer").value = "";
+        answerArray.push(answer);
+      } else {
+        document.getElementById("alreadyAnswered").textContent =
+          "Must include the highlighted word!";
+      }
     }
-    answerArray.push(answer);
-    //const movies = await response.json();
-    //console.log(movies);
   }
 }
