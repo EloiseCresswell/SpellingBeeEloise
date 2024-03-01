@@ -82,6 +82,16 @@ function comboLetters() {
 }
 comboLetters();
 
+function deleteButtonWork() {
+  let answerProvided = document.getElementById("answer").value;
+  let newAnswer = answerProvided.slice(0, -1);
+  document.getElementById("answer").value = newAnswer;
+}
+
+let deleteButton = document.getElementById("delete");
+deleteButton.addEventListener("click", deleteButtonWork);
+//add delete button using slice(0, -1)
+
 //check if combo letters are in the answer provided...
 
 //function to check if the answer is correct / in the dictionary and run it if clicked
@@ -89,6 +99,7 @@ let answerSubmit = document.getElementById("submitButton");
 answerSubmit.addEventListener("click", getAnswer);
 
 function getAnswer() {
+  document.getElementById("alreadyAnswered").textContent = "";
   answer = document.getElementById("answer").value;
   const url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + answer;
   checkDictionary();
@@ -106,10 +117,13 @@ function getAnswer() {
       console.log("not a word");
     } else if (answerArray.includes(answer)) {
       console.log("answer already in the answer array");
+      document.getElementById("alreadyAnswered").textContent =
+        "Answer already submitted!";
     } else {
       console.log("nice word");
       score = score + additionToScore;
       document.getElementById("score").textContent = score;
+      document.getElementById("answer").value = "";
     }
     answerArray.push(answer);
     //const movies = await response.json();
