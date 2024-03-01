@@ -1,3 +1,68 @@
-* {
-  background-color: yellow;
+@import url("https://fonts.googleapis.com/css2?family=Outfit:wght@200..800&display=swap");
+
+body {
+  background-image: linear-gradient(
+    to right bottom,
+    #fefefa,
+    #fdfde2,
+    #fdfbc9,
+    #fdf9af,
+    #fdf795
+  );
+  min-height: 100vh;
+  font-family: "Outfit";
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding-top: 36px;
+}
+h1 {
+  font-size: 36px;
+  margin: 0;
+}
+h2 {
+  font-size: 30px;
+}
+
+button {
+  height: 150px;
+  width: 150px;
+  border: 2px solid #f6d47b;
+  font-size: 70px;
+  background-color: #fffef8;
+  border-radius: 7px;
+  font-weight: bold;
+  //clip-path: polygon(25% 5%, 75% 5%, 100% 50%, 75% 95%, 25% 95%, 0% 50%);
+}
+input {
+  background: none;
+  border: none;
+  font-size: 50px;
+  width: 100%;
+  text-align: center;
+}
+#forthLet,
+#submitButton,
+#delete {
+  background-color: #f6d47b;
+  color: white;
+}
+#forthLet {
+  background-color: #e6ab10;
+}
+#submitButton,
+#delete {
+  font-size: 30px;
+}
+#honeycomb {
+  background-color: white;
+  max-width: 500px;
+  display: flex;
+  gap: 7px;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  padding: 20px;
+  margin-bottom: 20px;
+  border-radius: 5%;
 }
