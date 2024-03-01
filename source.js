@@ -1,5 +1,7 @@
 console.log("hello there!");
 let score = 0;
+let answerArray = [];
+let answer = "";
 //finding the answer when you submit the button
 //function to give 7 random letters...
 let characters = "BCDFGHJKLMNPQRSTVWXYZ";
@@ -32,15 +34,8 @@ function twoRandomVowels() {
 function comboLetters() {
   const constnants = fiveRandomConsts();
   const vowels = twoRandomVowels();
-  //document.getElementById("letters").innerHTML = constnants + vowels;
   //printing each letter onto the corresponding button
   let letterString = constnants + vowels;
-  /*let letterArray = letterString.split("").join(",");
-  //console.log(letterArray);
-  //document.getElementById("firstLet").innerHTML = letterString[0];
-  letterArray.forEach((element) => {
-    document.getElementById("firstLet").innerHTML = letterString[element];
-  });*/
   let buttonone = document.getElementById("firstLet");
   buttonone.innerHTML = letterString[0];
   let buttontwo = document.getElementById("secondLet");
@@ -55,12 +50,11 @@ function comboLetters() {
   buttonsix.innerHTML = letterString[5];
   let buttonseven = document.getElementById("sevenLet");
   buttonseven.innerHTML = letterString[6];
-  //check if button 1 is clicked, if so put value in answer field
+  //check if button is clicked, if so put value in answer field
   buttonone.addEventListener("click", function () {
     let letter = buttonone.innerHTML;
     document.getElementById("answer").value += letter;
   });
-  //if button 2 is clicked
   buttontwo.addEventListener("click", function () {
     let letter = buttontwo.innerHTML;
     document.getElementById("answer").value += letter;
@@ -110,11 +104,14 @@ function getAnswer() {
     const response = await fetch(url);
     if (response.status === 404) {
       console.log("not a word");
+    } else if (answerArray.includes(answer)) {
+      console.log("answer already in the answer array");
     } else {
       console.log("nice word");
       score = score + additionToScore;
       document.getElementById("score").textContent = score;
     }
+    answerArray.push(answer);
     //const movies = await response.json();
     //console.log(movies);
   }
