@@ -1,84 +1,76 @@
-console.log("hello there!");
+//Variables used during:
 let score = 0;
 let answerArray = [];
 let answer = "";
+let CONSTANANTS = "BCDFGHJKLMNPQRSTVWXYZ";
+let VOWELS = "AEIOU";
 
-//finding the answer when you submit the button
-//function to give 7 random letters...
-let characters = "BCDFGHJKLMNPQRSTVWXYZ";
-function fiveRandomConsts() {
+//checking score for the cookie
+const scoreCookie = getCookie(`score`);
+document.getElementById("score").innerHTML = scoreCookie ? scoreCookie : 0;
+
+//function to get a random letter depending on the string given
+function getRandomLetters(amount, letterString) {
   let randomLetters = "";
-  for (let i = 0; i < 5; i++) {
-    let randomLet = characters.charAt(
-      Math.floor(Math.random() * characters.length)
+  for (let i = 0; i < amount; i++) {
+    let randomLet = letterString.charAt(
+      Math.floor(Math.random() * letterString.length)
     );
-    characters = characters.replace(randomLet, "");
+    letterString = letterString.replace(randomLet, "");
     randomLetters += randomLet;
   }
   return randomLetters;
 }
-//Vowel function
-let vowels = "AEIOU";
-
-function twoRandomVowels() {
-  let randomLettersVowels = "";
-  for (let i = 0; i < 2; i++) {
-    let randomLet = vowels.charAt(Math.floor(Math.random() * vowels.length));
-    //console.log(randomLet);
-    vowels = vowels.replace(randomLet, "");
-    randomLettersVowels += randomLet;
-    //console.log(randomLetters);
+//Read a cookie to give cookie letters (from googles)
+function getCookie(cname) {
+  let name = cname + "=";
+  let decodedCookie = decodeURIComponent(document.cookie);
+  let ca = decodedCookie.split(";");
+  for (let i = 0; i < ca.length; i++) {
+    let c = ca[i];
+    while (c.charAt(0) == " ") {
+      c = c.substring(1);
+    }
+    if (c.indexOf(name) == 0) {
+      return c.substring(name.length, c.length);
+    }
   }
-  return randomLettersVowels;
+  return "";
 }
-//combining the two functions together to produce the string for the letters
+//function to produce the string for the letters
 function comboLetters() {
-  const constnants = fiveRandomConsts();
-  const vowels = twoRandomVowels();
-  //printing each letter onto the corresponding button
-  let letterString = constnants + vowels;
-  let buttonone = document.getElementById("firstLet");
-  buttonone.innerHTML = letterString[0];
-  let buttontwo = document.getElementById("secondLet");
-  buttontwo.innerHTML = letterString[1];
-  let buttonthree = document.getElementById("thirdLet");
-  buttonthree.innerHTML = letterString[2];
-  let buttonfour = document.getElementById("forthLet");
-  buttonfour.innerHTML = letterString[3];
-  let buttonfive = document.getElementById("fifthLet");
-  buttonfive.innerHTML = letterString[4];
-  let buttonsix = document.getElementById("sixLet");
-  buttonsix.innerHTML = letterString[5];
-  let buttonseven = document.getElementById("sevenLet");
-  buttonseven.innerHTML = letterString[6];
-  //check if button is clicked, if so put value in answer field
-  buttonone.addEventListener("click", function () {
-    let letter = buttonone.innerHTML;
-    document.getElementById("answer").value += letter;
-  });
-  buttontwo.addEventListener("click", function () {
-    let letter = buttontwo.innerHTML;
-    document.getElementById("answer").value += letter;
-  });
-  buttonthree.addEventListener("click", function () {
-    let letter = buttonthree.innerHTML;
-    document.getElementById("answer").value += letter;
-  });
-  buttonfour.addEventListener("click", function () {
-    let letter = buttonfour.innerHTML;
-    document.getElementById("answer").value += letter;
-  });
-  buttonfive.addEventListener("click", function () {
-    let letter = buttonfive.innerHTML;
-    document.getElementById("answer").value += letter;
-  });
-  buttonsix.addEventListener("click", function () {
-    let letter = buttonsix.innerHTML;
-    document.getElementById("answer").value += letter;
-  });
-  buttonseven.addEventListener("click", function () {
-    let letter = buttonseven.innerHTML;
-    document.getElementById("answer").value += letter;
+  let letterString = "";
+  //checking if we have a cookie set to letters
+  let cookieLetters = getCookie("letters");
+  if (cookieLetters) {
+    letterString = cookieLetters;
+  } else {
+    letterString =
+      getRandomLetters(5, CONSTANANTS) + getRandomLetters(2, VOWELS);
+  }
+  //expiring the cookie
+  let exdate = new Date();
+  exdate.setHours(23);
+  exdate.setMinutes(59);
+  exdate.setSeconds(59);
+  //COOKIE TIME
+  document.cookie = `letters=${letterString}; expires=${exdate}`;
+  let buttonId = [
+    "firstLet",
+    "secondLet",
+    "thirdLet",
+    "forthLet",
+    "fifthLet",
+    "sixLet",
+    "sevenLet",
+  ];
+  buttonId.forEach(function (element, index) {
+    let button = document.getElementById(element);
+    button.innerHTML = letterString[index];
+    button.addEventListener("click", function () {
+      let letter = button.innerHTML;
+      document.getElementById("answer").value += letter;
+    });
   });
 }
 comboLetters();
@@ -91,11 +83,7 @@ function deleteButtonWork() {
 
 let deleteButton = document.getElementById("delete");
 deleteButton.addEventListener("click", deleteButtonWork);
-//add delete button using slice(0, -1)
 
-//check if combo letters are in the answer provided...
-
-//function to check if the answer is correct / in the dictionary and run it if clicked
 let answerSubmit = document.getElementById("submitButton");
 answerSubmit.addEventListener("click", getAnswer);
 
@@ -105,35 +93,40 @@ function getAnswer() {
   const url = "https://api.dictionaryapi.dev/api/v2/entries/en/" + answer;
   checkDictionary();
   //changing the score based on answer length...
-  //if <4 - score 1
-  //if >4 - score 2
   let additionToScore = 1;
   if (answer.length > 4) {
     additionToScore = 2;
   }
+
   //function to check if the given word is in fact a word in the dictionary
   async function checkDictionary() {
     const response = await fetch(url);
     if (response.status === 404) {
-      document.getElementById(
-        "alreadyAnswered"
-      ).textContent = `${answer} is not a word, try again!`;
+      setAlreadyAnswered(`${answer} is not a word, try again!`);
     } else if (answerArray.includes(answer)) {
-      console.log("answer already in the answer array");
-      document.getElementById("alreadyAnswered").textContent =
-        "Answer already submitted!";
+      setAlreadyAnswered("Answer already submitted!");
     } else {
       const buttonfour = document.getElementById("forthLet").innerHTML;
       if (answer.includes(buttonfour)) {
-        console.log("nice word");
+        setAlreadyAnswered(`${answer}, nice word!`);
         score = score + additionToScore;
         document.getElementById("score").textContent = score;
         document.getElementById("answer").value = "";
         answerArray.push(answer);
+
+        //add cookie to store the score
+        //expiring the cookie
+        let exdate = new Date();
+        exdate.setHours(23);
+        exdate.setMinutes(59);
+        exdate.setSeconds(59);
+        document.cookie = `score=${score}; expires=${exdate}`;
       } else {
-        document.getElementById("alreadyAnswered").textContent =
-          "Must include the highlighted word!";
+        setAlreadyAnswered(`Must include the highlighted word, ${buttonfour}`);
       }
     }
   }
+}
+function setAlreadyAnswered(text) {
+  document.getElementById("alreadyAnswered").textContent = text;
 }
