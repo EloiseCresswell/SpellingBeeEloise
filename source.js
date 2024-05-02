@@ -10,8 +10,9 @@ let VOWELS = "AEIOU";
 document.getElementById("score").innerHTML = scoreCookie ? scoreCookie : 0;
 
 //function to get a random letter depending on the string given
-let randomLetters = "";
+
 function getRandomLetters(amount, letterString) {
+  let randomLetters = "";
   for (let i = 0; i < amount; i++) {
     let randomLet = letterString.charAt(
       Math.floor(Math.random() * letterString.length)
@@ -24,19 +25,19 @@ function getRandomLetters(amount, letterString) {
 }
 //Read a cookie to give cookie letters (from googles)
 function getCookie(cname) {
-  let name = cname + "=";
-  let decodedCookie = decodeURIComponent(document.cookie);
-  let ca = decodedCookie.split(";");
-  for (let i = 0; i < ca.length; i++) {
-    let c = ca[i];
-    while (c.charAt(0) == " ") {
-      c = c.substring(1);
-    }
-    if (c.indexOf(name) == 0) {
-      return c.substring(name.length, c.length);
-    }
-  }
-  return "";
+  //   let name = cname + "=";
+  //   let decodedCookie = decodeURIComponent(document.cookie);
+  //   let ca = decodedCookie.split(";");
+  //   for (let i = 0; i < ca.length; i++) {
+  //     let c = ca[i];
+  //     while (c.charAt(0) == " ") {
+  //       c = c.substring(1);
+  //     }
+  //     if (c.indexOf(name) == 0) {
+  //       return c.substring(name.length, c.length);
+  //     }
+  //   }
+  //   return "";
 }
 //function to produce the string for the letters
 
