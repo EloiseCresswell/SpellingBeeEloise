@@ -10,14 +10,15 @@ let VOWELS = "AEIOU";
 document.getElementById("score").innerHTML = scoreCookie ? scoreCookie : 0;
 
 //function to get a random letter depending on the string given
+let randomLetters = "";
 function getRandomLetters(amount, letterString) {
-  let randomLetters = "";
   for (let i = 0; i < amount; i++) {
     let randomLet = letterString.charAt(
       Math.floor(Math.random() * letterString.length)
     );
     letterString = letterString.replace(randomLet, "");
     randomLetters += randomLet;
+    console.log(randomLetters);
   }
   return randomLetters;
 }
@@ -38,8 +39,9 @@ function getCookie(cname) {
   return "";
 }
 //function to produce the string for the letters
+
+let letterString = "";
 function comboLetters() {
-  let letterString = "";
   //checking if we have a cookie set to letters
   let cookieLetters = getCookie("letters");
   if (cookieLetters) {
@@ -83,11 +85,39 @@ function comboLetters() {
 }
 comboLetters();
 
+//function to add event listeners for when specific keys are pressed
+document.addEventListener("keydown", function keyPressed(event) {
+  let key = event.key;
+  let upperKey = key.toUpperCase();
+  console.log(key);
+  console.log(letterString);
+  //check if the key pressed is part of the letterString
+  if (letterString.includes(upperKey)) {
+    document.getElementById("answer").value += upperKey;
+  }
+});
+
 function deleteButtonWork() {
   let answerProvided = document.getElementById("answer").value;
   let newAnswer = answerProvided.slice(0, -1);
   document.getElementById("answer").value = newAnswer;
 }
+
+//function delete key to work
+document.addEventListener("keydown", function deleteKeyWork(event) {
+  if (event.keyCode == 8) {
+    let answerProvided = document.getElementById("answer").value;
+    let newAnswer = answerProvided.slice(0, -1);
+    document.getElementById("answer").value = newAnswer;
+  }
+});
+
+//function to get enter to submit the answer
+document.addEventListener("keydown", function sendAnswer(event) {
+  if (event.keyCode == 13) {
+    getAnswer();
+  }
+});
 
 let deleteButton = document.getElementById("delete");
 deleteButton.addEventListener("click", deleteButtonWork);
