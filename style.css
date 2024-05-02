@@ -66,3 +66,20 @@ input {
   margin-bottom: 20px;
   border-radius: 5%;
 }
+
+@media only screen and (max-width: 600px) {
+  #honeycomb {
+    gap: 3px;
+    padding: auto;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+  }
+  button {
+    height: 75px;
+    width: 75px;
+  }
+  #submitButton,
+  #delete {
+    font-size: 15px;
+  }
+}

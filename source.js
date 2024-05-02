@@ -1,12 +1,12 @@
 //Variables used during:
-let score = 0;
-let answerArray = [];
+const scoreCookie = getCookie(`score`);
+let score = scoreCookie ? Number(scoreCookie) : 0;
+let answerArray = getCookie(`answer`) ? JSON.parse(getCookie(`answer`)) : [];
 let answer = "";
 let CONSTANANTS = "BCDFGHJKLMNPQRSTVWXYZ";
 let VOWELS = "AEIOU";
 
-//checking score for the cookie
-const scoreCookie = getCookie(`score`);
+//changing HTML depedning on the score  of the cookie  when webpage is loaded (if cookie has a score)
 document.getElementById("score").innerHTML = scoreCookie ? scoreCookie : 0;
 
 //function to get a random letter depending on the string given
@@ -45,8 +45,16 @@ function comboLetters() {
   if (cookieLetters) {
     letterString = cookieLetters;
   } else {
+    let consties = getRandomLetters(5, CONSTANANTS);
+    let vowlies = getRandomLetters(2, VOWELS);
     letterString =
-      getRandomLetters(5, CONSTANANTS) + getRandomLetters(2, VOWELS);
+      consties[0] +
+      vowlies[0] +
+      consties[1] +
+      vowlies[1] +
+      consties[2] +
+      consties[3] +
+      consties[4];
   }
   //expiring the cookie
   let exdate = new Date();
@@ -113,14 +121,16 @@ function getAnswer() {
         document.getElementById("score").textContent = score;
         document.getElementById("answer").value = "";
         answerArray.push(answer);
-
         //add cookie to store the score
         //expiring the cookie
         let exdate = new Date();
         exdate.setHours(23);
         exdate.setMinutes(59);
         exdate.setSeconds(59);
-        document.cookie = `score=${score}; expires=${exdate}`;
+        document.cookie = `score=${score}; expires=${exdate};`;
+        document.cookie = `answer=${JSON.stringify(
+          answerArray
+        )}; expires=${exdate};`;
       } else {
         setAlreadyAnswered(`Must include the highlighted word, ${buttonfour}`);
       }
